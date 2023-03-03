@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-
+import Action from "./Action"
 // 子组件
 const Student = (props) => {
 
@@ -7,7 +7,6 @@ const Student = (props) => {
         team: "rma",
         num: 7
     })
-    console.log("进入");
 
     const handleClick = () => {
         // const newInfo = Object.assign({}, info);
@@ -19,16 +18,55 @@ const Student = (props) => {
         console.log(h1Ref.current);
     }
 
-    
+
     const h1Ref = useRef();
 
 
+    const [actions, setActions] = useState(["射门", "过人", "传球", "解围"])
+
+    const [newAction, setNewAction] = useState("")
 
 
-    return     <div ref={h1Ref}>名字是 {props.name} ---  年龄是 {props.age} -----队伍是 {info.team}------ 号码是 {info.num}
+
+    const changeNewAction = (e) => {
+        setNewAction(e.target.value)
+    }
+
+    const clickAdd = () => {
+        console.log(newAction);
+        setActions([...actions, newAction])
+    }
+
+    const getAction = (value) => {
+        console.log(value);
+
+    }
+    const handleDelete = () => {
+        console.log("删除");
+        const arr = [...actions]
+        arr.pop()
+        console.log(arr);
+        setActions(arr)
+
+    }
+
+
+
+    return <div ref={h1Ref}>名字是 {props.name} ---  年龄是 {props.age} -----队伍是 {info.team}------ 号码是 {info.num}
+
+        <div>
+            <h3>行为：</h3>
+            {actions.length==0?<div>无数据！！！！</div>:actions.map(item => <Action getAction={getAction} key={item} action={item} />)}
+
+        </div>
+
+        <div><h3>添加 行为：</h3>
+            <input type="text" value={newAction} onChange={changeNewAction}></input>
+            <button onClick={clickAdd}>添加</button>
+        </div>
 
         <div >
-            <button onClick={handleClick}>点击</button>
+            <button onClick={handleDelete}>删除</button>
         </div>
     </div>
 
